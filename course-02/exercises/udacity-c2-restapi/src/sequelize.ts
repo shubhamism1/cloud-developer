@@ -4,7 +4,7 @@ import { config } from './config/config';
 
 const c = config.dev;
 
-console.log("this is " +  JSON.stringify(c));
+// console.log("this is " +  JSON.stringify(c));
 
 // Instantiate new Sequelize instance!
 export const sequelize = new Sequelize({
