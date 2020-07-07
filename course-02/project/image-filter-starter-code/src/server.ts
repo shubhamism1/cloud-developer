@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
+var globalList: string[] = [];
+
 (async () => {
 
   // Init the Express application
@@ -9,6 +11,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
+
+  
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
@@ -30,6 +34,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get( "/filteredimage", async ( req, res ) => {
+    var imageUrl = req.query.image_url;
+
+      if ( !imageUrl ) {
+        return res.status(400)
+                  .send(`image url is required`);
+      }
+    const filteredpath = await filterImageFromURL(imageUrl);
+
+    globalList.push(filteredpath);
+    
+    await res.sendFile(filteredpath);
+    
+    
+});
+
+
+app.delete( "/deleteLocalFiles", async ( req, res ) => {
+  deleteLocalFiles(globalList);
+} );
   
   // Root Endpoint
   // Displays a simple message to the user

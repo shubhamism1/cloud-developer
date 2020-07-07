@@ -5,6 +5,7 @@ const c = config.dev;
 
 //Configure AWS
 if(c.aws_profile !== "DEPLOYED") {
+  console.log("this is bucket " + c.aws_profile);
   var credentials = new AWS.SharedIniFileCredentials({profile: 'personal-dev'});
   AWS.config.credentials = credentials;
 }

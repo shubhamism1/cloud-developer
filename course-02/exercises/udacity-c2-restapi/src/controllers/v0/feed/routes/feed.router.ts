@@ -9,6 +9,7 @@ const router: Router = Router();
 // this is not root directory. it is from which path the server is entering from.
 router.get('/', async (req: Request, res: Response) => {
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+    
     items.rows.map((item) => {
             if(item.url) {
                 item.url = AWS.getGetSignedUrl(item.url);
