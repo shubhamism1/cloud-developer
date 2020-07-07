@@ -7,8 +7,14 @@ import bodyParser from 'body-parser';
 
 import { V0MODELS } from './controllers/v0/model.index';
 
+// const dotenv = require('dotenv');
+// dotenv.config();
+
 (async () => {
-  await sequelize.addModels(V0MODELS);
+  //registers all the models
+  await sequelize.addModels(V0MODELS);   // willl wait for it to complete
+
+  //check database is in sync
   await sequelize.sync();
 
   const app = express();
@@ -23,6 +29,7 @@ import { V0MODELS } from './controllers/v0/model.index';
     next();
   });
 
+  //route to indexRouter
   app.use('/api/v0/', IndexRouter)
 
   // Root URI call
