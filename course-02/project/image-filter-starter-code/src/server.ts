@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
-var globalList: string[] = [];
+
 
 (async () => {
 
@@ -44,17 +44,24 @@ var globalList: string[] = [];
       }
     const filteredpath = await filterImageFromURL(imageUrl);
 
-    globalList.push(filteredpath);
     
-    await res.sendFile(filteredpath);
+    
+    res.status(200).sendFile(filteredpath, function(err) {
+      if (err) {
+        console.log(err); 
+      }
+      var globalList: string[] = [];
+      globalList.push(filteredpath);
+      deleteLocalFiles(globalList);       
+   });
     
     
 });
 
 
-app.delete( "/deleteLocalFiles", async ( req, res ) => {
-  deleteLocalFiles(globalList);
-} );
+// app.delete( "/deleteLocalFiles", async ( req, res ) => {
+  
+// } );
   
   // Root Endpoint
   // Displays a simple message to the user
